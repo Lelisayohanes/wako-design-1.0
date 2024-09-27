@@ -18,6 +18,7 @@ interface Product {
   rating: string;
   image: string;
 }
+
 // Mock data for products
 const generateProducts = (): Product[] => {
   return Array(18).fill(null).map((_, i) => ({
@@ -28,8 +29,10 @@ const generateProducts = (): Product[] => {
     image: `/images/new-right.png?height=200&width=200&text=Product+${i + 1}`
   }))
 }
+
 export function ProductCollectionPageComponent() {
-  const [products, setProducts] = useState([])
+  // Define state with an explicit type
+  const [products, setProducts] = useState<Product[]>([])  // Set the correct type for products
   const [currentPage, setCurrentPage] = useState(1)
   const [sortOption, setSortOption] = useState('popularity')
 

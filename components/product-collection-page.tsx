@@ -11,34 +11,54 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Star } from "lucide-react"
 
 // Define a type for the product
+interface Image {
+  image_type: string;
+  image_url: string;
+}
+
 interface Product {
   id: number;
-  title: string;
-  price: number;
-  rating: string;
-  image: string;
+  name: string;
+  description: string;
+  price: string;
+  discount: string;
+  images: Image[];
+  category: string | null;
 }
 
-// Mock data for products
-const generateProducts = (): Product[] => {
-  return Array(18).fill(null).map((_, i) => ({
-    id: i + 1,
-    title: `Product ${i + 1}`,
-    price: Math.floor(Math.random() * 100) + 10,
-    rating: (Math.random() * 5).toFixed(1),
-    image: `/images/new-right.png?height=200&width=200&text=Product+${i + 1}`
-  }))
-}
+// Fetch products from the API
+const fetchProducts = async (): Promise<Product[]> => {
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/ecommerce/products/');
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json(); // Ensure this is only called once
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+    throw error; // Rethrow if you want to catch it later
+  }
+};
+
+
 
 export function ProductCollectionPageComponent() {
-  // Define state with an explicit type
-  const [products, setProducts] = useState<Product[]>([])  // Set the correct type for products
+  const [products, setProducts] = useState<Product[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [sortOption, setSortOption] = useState('popularity')
 
   useEffect(() => {
-    // Generate products on the client side only
-    setProducts(generateProducts())
+    const getProducts = async () => {
+      try {
+        const data = await fetchProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
+    };
+
+    getProducts();
   }, [])
 
   const productsPerPage = 9
@@ -122,15 +142,26 @@ export function ProductCollectionPageComponent() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {currentProducts.map((product) => (
+              
               <Card key={product.id}>
+                
                 <CardContent className="p-4">
-                  <img src={product.image} alt={product.title} className="w-full h-48 object-cover mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
+                  
+                <img
+                    src={`http://127.0.0.1:8000/${product.images.find(image => image.image_type === 'main')?.image_url}`}
+                    alt={product.images.find(image=>{
+                      image.image_type == 'main'
+                    })?.image_url}
+                    className="w-full h-48 object-cover mb-4"
+                  />
+
+                  <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                   <div className="flex items-center mb-2">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="ml-1">{product.rating}</span>
+                    <span className="ml-1">Rating: N/A</span>
                   </div>
                   <p className="text-xl font-bold">${product.price}</p>
+                  {product.discount && <p className="text-red-500 line-through">${product.discount}</p>}
                 </CardContent>
                 <CardFooter>
                   <Button className="w-full">Add to Cart</Button>
@@ -138,6 +169,7 @@ export function ProductCollectionPageComponent() {
               </Card>
             ))}
           </div>
+
 
           <div className="mt-8 flex justify-center">
             {Array.from({ length: Math.ceil(products.length / productsPerPage) }, (_, i) => (

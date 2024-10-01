@@ -11,16 +11,16 @@ const beerCollections = [
     title: 'Craft IPA Collection',
     description:
       'Discover our handcrafted IPA collection, featuring bold flavors and aromatic hops that will delight your taste buds.',
-    src: '/placeholder.svg',
-    link: '/collections/craft-ipa',
+      src: "/images/right-side.png" ,
+      link: '/collections/craft-ipa',
     color: '#FFA500',
   },
   {
     title: 'Seasonal Brews',
     description:
       'Experience the taste of the seasons with our limited edition brews, crafted to perfectly complement each time of year.',
-    src: '/placeholder.svg',
-    link: '/collections/seasonal',
+      src: "/images/right-side.png" ,
+      link: '/collections/seasonal',
     color: '#4CAF50',
   },
   // {
@@ -35,7 +35,7 @@ const beerCollections = [
     title: 'Wheat Beer Wonders',
     description:
       'Light, refreshing, and perfect for sunny days. Our wheat beer collection offers a crisp and smooth drinking experience.',
-    src: '/placeholder.svg',
+    src: "/images/right-side.png" ,
     link: '/collections/wheat-beers',
     color: '#F60002',
   },
@@ -43,8 +43,8 @@ const beerCollections = [
     title: 'Sour & Wild Fermentation',
     description:
       'For the adventurous palate, our sour and wild fermentation beers offer unique, tangy flavors that push the boundaries of traditional brewing.',
-    src: '/placeholder.svg',
-    link: '/collections/sour-wild',
+      src: "/images/right-side.png" ,
+      link: '/collections/sour-wild',
     color: '#F7F7F7',
   },
 ]

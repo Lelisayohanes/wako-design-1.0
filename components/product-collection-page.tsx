@@ -144,14 +144,10 @@ export function ProductCollectionPageComponent() {
             {currentProducts.map((product) => (
               
               <Card key={product.id}>
-                
                 <CardContent className="p-4">
-                  
-                <img
-                    src={`http://127.0.0.1:8000/${product.images.find(image => image.image_type === 'main')?.image_url}`}
-                    alt={product.images.find(image=>{
-                      image.image_type == 'main'
-                    })?.image_url}
+                  <img
+                    src={product.images.find(image => image.image_type === 'main')?.image_url ?? 'fallback-image-url.jpg'}
+                    alt={product.name}
                     className="w-full h-48 object-cover mb-4"
                   />
 
@@ -167,6 +163,7 @@ export function ProductCollectionPageComponent() {
                   <Button className="w-full">Add to Cart</Button>
                 </CardFooter>
               </Card>
+
             ))}
           </div>
 
